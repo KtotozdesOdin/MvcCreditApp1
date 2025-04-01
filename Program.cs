@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MvcCreditApp.Data;
 using MvcCreditApp1.Data;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using MvcCreditApp.Models;
 
 namespace MvcCreditApp1;
 
@@ -10,6 +11,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
+
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
@@ -24,9 +26,16 @@ public class Program
 
         builder.Services.AddDbContext<CreditContext>(options
             =>options.UseSqlServer(builder.Configuration.GetConnectionString("CreditContext") ?? 
-            throw new InvalidOperationException("Connection string 'CreditContext' not found."))); 
+            throw new InvalidOperationException("Connection string 'CreditContext' not found.")));
 
         var app = builder.Build();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+
+            SeedData.Initialize(services);
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -39,6 +48,8 @@ public class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+
+
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
