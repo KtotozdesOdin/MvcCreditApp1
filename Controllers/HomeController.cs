@@ -1,20 +1,26 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using MvcCreditApp.Data;
 using MvcCreditApp1.Models;
 
 namespace MvcCreditApp1.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly CreditContext db;
+
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, CreditContext context)
     {
         _logger = logger;
+        db = context;
     }
 
     public IActionResult Index()
     {
+        var allCredits = db.Credits.ToList<Credit>();
+        ViewBag.Credits = allCredits;
         return View();
     }
 
