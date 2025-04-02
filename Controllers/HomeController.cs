@@ -19,8 +19,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var allCredits = db.Credits.ToList<Credit>();
-        ViewBag.Credits = allCredits;
+        GiveCredits();
         return View();
     }
 
@@ -33,5 +32,32 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    private void GiveCredits()
+    {
+        var allCredits = db.Credits.ToList<Credit>();
+        ViewBag.Credits = allCredits;
+        
+    }
+
+    [HttpGet]
+    public ActionResult CreateBid()
+    {
+        GiveCredits();
+        var allBids = db.Bids.ToList<Bid>();
+        ViewBag.Bids = allBids;
+        return View();
+    }
+
+    [HttpPost]
+    public string CreateBid(Bid newBid)
+    {
+        newBid.bidDate = DateTime.Now;
+        // Добавляем новую заявку в БД 
+        db.Bids.Add(newBid);
+        // Сохраняем в БД все изменения 
+        db.SaveChanges();
+        return "Спасибо, " + newBid.Name + ", за выбор нашего банка.Ваша заявка будет рассмотрена в течении 10 дней."; 
     }
 }
