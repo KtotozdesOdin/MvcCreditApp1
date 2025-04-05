@@ -17,7 +17,7 @@ namespace MvcCreditApp1.Models
         public virtual string CreditHead { get; set; }
         // Дата подачи заявки 
         [DisplayName("Дата подачи заявки")]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yy}")]
         [Required]
         public virtual DateTime bidDate { get; set; }
