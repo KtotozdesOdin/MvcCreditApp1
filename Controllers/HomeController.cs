@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using MvcCreditApp.Data;
 using MvcCreditApp1.Models;
@@ -59,5 +60,17 @@ public class HomeController : Controller
         // Сохраняем в БД все изменения 
         db.SaveChanges();
         return "Спасибо, " + newBid.Name + ", за выбор нашего банка.Ваша заявка будет рассмотрена в течении 10 дней."; 
+    }
+
+    [HttpGet]
+    public ActionResult BidSearch(string name)
+    {
+        var allBids = db.Bids.Where(a => a.CreditHead.Contains(name)).ToList();
+        if (allBids.Count == 0)
+        {
+            return Content("Указанный кредит " + name + " не найден");
+            //return HttpNotFound(); 
+        }
+        return PartialView(allBids);
     }
 }

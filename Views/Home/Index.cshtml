@@ -7,6 +7,21 @@
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
+<script>
+
+    function funBegin() {
+        alert("Start Work ajax");
+    }
+    function funSuccess(data) {
+         alert("Запрос выполнен, получено:\n"+data);
+         console.log(data);
+    }
+    function funComplete(request, status) {
+        alert("Статус запроса:\n"+status);
+    }
+</script>
+
+
 <div class="row">
     <div class="col-md-4">
         <h3>Программы кредитования</h3>
@@ -29,6 +44,25 @@
         </table>
     </div>
 
-    <p><a asp-controller="Home" asp-action="CreateBid" asp->Подать заявку на получение кредита &raquo;</a></p> 
+    <p><a asp-controller="Home" asp-action="CreateBid" asp->Подать заявку на получение кредита &raquo;</a></p>
+
+    <div>
+        <h5>Просмотр заявителей по кредиту</h5>
+    </div>
+    <div id="results">
+        <form data-ajax="true" data-ajax-url="/Home/BidSearch"
+              data-ajax-update="#results" data-ajax-mode="after">
+            <input type="text" name="Name" />
+            <input type="submit" value="Поиск" />
+        </form>
+
+    </div>
+    @section Scripts {
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+               
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    }
 </div> 
+
 
