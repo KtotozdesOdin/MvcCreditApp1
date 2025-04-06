@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MvcCreditApp.Data;
 using MvcCreditApp1.Models;
@@ -52,6 +53,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
+    [Authorize]
     public string CreateBid(Bid newBid)
     {
         newBid.bidDate = DateTime.Now;
